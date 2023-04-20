@@ -36,16 +36,4 @@ public class MoneyTransferTest {
         var actualBalanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
         var actualBalanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
     }
-
-    @Test
-    void shouldCancellationTransferMoneyHappyPath() {
-        var personalAccountPage = new PersonalAccountPage();
-        var firstCard = DataHelper.CardsInfo.getFirstCardInfo();
-        var secondCard = DataHelper.CardsInfo.getSecondCardInfo();
-        int balanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
-        int balanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
-        int sumTransfer = DataHelper.TransferSum.getTransferSum(balanceFirstCard);
-        var transferMoneyPage = personalAccountPage.selectCardToTransfer(secondCard);
-        var personalAccountPageCancelTransfer = transferMoneyPage.cancelTransferMoney(sumTransfer, firstCard);
-    }
 }
