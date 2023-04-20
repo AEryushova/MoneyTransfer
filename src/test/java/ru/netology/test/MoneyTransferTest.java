@@ -8,6 +8,7 @@ import ru.netology.page.AuthorizationPage;
 import ru.netology.page.PersonalAccountPage;
 
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MoneyTransferTest {
     @BeforeEach
@@ -35,5 +36,19 @@ public class MoneyTransferTest {
         var personalAccountPageHappyTransfer = transferMoneyPage.transferMoney(sumTransfer, firstCard);
         var actualBalanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
         var actualBalanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        assertEquals(expectedBalanceFirstCard,actualBalanceFirstCard);
+        assertEquals(expectedBalanceSecondCard,actualBalanceSecondCard);
+    }
+    @Test
+    void shouldCancellationTransferMoneyHappyPath() {
+        var personalAccountPage = new PersonalAccountPage();
+        var firstCard = DataHelper.CardsInfo.getFirstCardInfo();
+        var secondCard = DataHelper.CardsInfo.getSecondCardInfo();
+        int balanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
+        int balanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        int sumTransfer = DataHelper.TransferSum.getTransferSum(balanceFirstCard);
+        var transferMoneyPage = personalAccountPage.selectCardToTransfer(secondCard);
+        var personalAccountPageCancelTransfer = transferMoneyPage.cancelTransferMoney(sumTransfer, firstCard);
+
     }
 }

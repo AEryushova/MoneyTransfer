@@ -13,8 +13,6 @@ public class PersonalAccountPage {
     private ElementsCollection cards = $$(".list__item div");
     private final String balanceStart = "баланс: ";
     private final String balanceFinish = " р.";
-    private final SelenideElement personalArea = $("[data-test-id ='dashboard']");
-    private final SelenideElement updateButton = $("[data-test-id='action-reload']");
 
 
     public PersonalAccountPage() {
