@@ -11,27 +11,30 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MoneyTransferTest {
-
-    @Test
-    void shouldTransferMoneyFirstToSecondCardHappyPath() {
+    @BeforeEach
+    void shouldToGoToPersonalAccount() {
         Configuration.holdBrowserOpen = true;
         open("http://localhost:9999/");
         var authorizationPage = new AuthorizationPage();
         var authInfo = DataHelper.AuthorizationInfo.getAuthorizationInfo();
         var verificationCodePage = authorizationPage.validLoginAndPassword(authInfo);
         var valCode = DataHelper.CodeVerification.getCodeVerification(authInfo);
-        var personalAccountPage= verificationCodePage.validCode(valCode);
+        verificationCodePage.validCode(valCode);
+    }
+    @Test
+    void shouldTransferMoneyFirstToSecondCardHappyPath() {
+        var personalAccountPage = new PersonalAccountPage();
         var firstCard = DataHelper.CardsInfo.getFirstCardInfo();
         var secondCard = DataHelper.CardsInfo.getSecondCardInfo();
-        int balanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
-        int balanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        int balanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo());
+        int balanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo());
         int sumTransfer = DataHelper.TransferSum.getTransferSum(balanceFirstCard);
         int expectedBalanceFirstCard = balanceFirstCard - sumTransfer;
         int expectedBalanceSecondCard = balanceSecondCard + sumTransfer;
         var transferMoneyPage = personalAccountPage.selectCardToTransfer(secondCard);
         var personalAccountPageHappyTransfer = transferMoneyPage.transferMoney(sumTransfer, firstCard);
-        var actualBalanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
-        var actualBalanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        var actualBalanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo());
+        var actualBalanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo());
         assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
         assertEquals(expectedBalanceSecondCard, actualBalanceSecondCard);
     }

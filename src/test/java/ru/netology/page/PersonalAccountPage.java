@@ -1,5 +1,6 @@
 package ru.netology.page;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
 import lombok.val;
@@ -10,24 +11,16 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class PersonalAccountPage {
-    private ElementsCollection cards = $$(".list__item div");
+    private static ElementsCollection cards = $$(".list__item div");
     private final String balanceStart = "баланс: ";
     private final String balanceFinish = " р.";
 
 
-    public PersonalAccountPage() {
+    public  PersonalAccountPage() {
     }
 
-    public int getCardBalance(String id) {
-        String text = null;
-        for (SelenideElement card : cards) {
-            if (id.equals(DataHelper.CardsInfo.getFirstCardInfo().getId())) {
-                card = $("[data-test-id ='92df3f1c-a033-48e6-8390-206f6b1f56c0']");
-            } else {
-                card = $("[data-test-id ='0f3f5c2a-249e-4c3d-8287-09f7a039391d']");
-            }
-            text = card.text();
-        }
+    public int getCardBalance(DataHelper.CardsInfo cardsInfo) {
+        var text = cards.findBy(Condition.text(cardsInfo.getCardNumber().substring(15))).getText();
         return extractBalance(text);
     }
 
