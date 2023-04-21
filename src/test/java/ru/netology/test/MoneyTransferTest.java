@@ -11,20 +11,16 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MoneyTransferTest {
-    @BeforeEach
-    void shouldToGoToPersonalAccount() {
+
+    @Test
+    void shouldTransferMoneyFirstToSecondCardHappyPath() {
         Configuration.holdBrowserOpen = true;
         open("http://localhost:9999/");
         var authorizationPage = new AuthorizationPage();
         var authInfo = DataHelper.AuthorizationInfo.getAuthorizationInfo();
         var verificationCodePage = authorizationPage.validLoginAndPassword(authInfo);
         var valCode = DataHelper.CodeVerification.getCodeVerification(authInfo);
-        verificationCodePage.validCode(valCode);
-    }
-
-    @Test
-    void shouldTransferMoneyFirstToSecondCardHappyPath() {
-        var personalAccountPage = new PersonalAccountPage();
+        var personalAccountPage= verificationCodePage.validCode(valCode);
         var firstCard = DataHelper.CardsInfo.getFirstCardInfo();
         var secondCard = DataHelper.CardsInfo.getSecondCardInfo();
         int balanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
