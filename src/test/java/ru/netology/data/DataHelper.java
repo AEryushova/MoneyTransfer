@@ -44,21 +44,6 @@ public class DataHelper {
 
     @Value
     public static class TransferSum {
-         static int minLimitSum = 1;
-          static int maxLimitSum = 10000;
-          static int maxSum = 10001;
-
-        public static int getMinLimitSum() {
-            return minLimitSum;
-        }
-
-        public static int getMaxLimitSum() {
-            return maxLimitSum;
-        }
-
-        public static int getMaxSum() {
-            return maxSum;
-        }
 
         public static int getTransferSum(int balance) {
             return new Random().nextInt(balance) + 1;
