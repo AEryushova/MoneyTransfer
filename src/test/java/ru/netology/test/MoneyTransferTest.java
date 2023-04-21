@@ -39,4 +39,66 @@ public class MoneyTransferTest {
         assertEquals(expectedBalanceFirstCard,actualBalanceFirstCard);
         assertEquals(expectedBalanceSecondCard,actualBalanceSecondCard);
     }
+    @Test
+    void shouldCancellationTransferMoneyHappyPath() {
+        var personalAccountPage = new PersonalAccountPage();
+        var firstCard = DataHelper.CardsInfo.getFirstCardInfo();
+        var secondCard = DataHelper.CardsInfo.getSecondCardInfo();
+        int balanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
+        int balanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        int sumTransfer = DataHelper.TransferSum.getTransferSum(balanceFirstCard);
+        var transferMoneyPage = personalAccountPage.selectCardToTransfer(secondCard);
+        var personalAccountPageCancelTransfer = transferMoneyPage.cancelTransferMoney(sumTransfer, firstCard);
+    }
+    @Test
+    void shouldTransferMaxLimitSumFirstToSecondCardHappyPath() {
+        var personalAccountPage = new PersonalAccountPage();
+        var firstCard = DataHelper.CardsInfo.getFirstCardInfo();
+        var secondCard = DataHelper.CardsInfo.getSecondCardInfo();
+        int balanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
+        int balanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        int sumTransfer = DataHelper.TransferSum.getMaxLimitSum();
+        int expectedBalanceFirstCard = balanceFirstCard - sumTransfer;
+        int expectedBalanceSecondCard = balanceSecondCard + sumTransfer;
+        var transferMoneyPage = personalAccountPage.selectCardToTransfer(secondCard);
+        var personalAccountPageHappyTransfer = transferMoneyPage.transferMoney(sumTransfer, firstCard);
+        var actualBalanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
+        var actualBalanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        assertEquals(expectedBalanceFirstCard,actualBalanceFirstCard);
+        assertEquals(expectedBalanceSecondCard,actualBalanceSecondCard);
+    }
+    @Test
+    void shouldTransferMinLimitSumFirstToSecondCardHappyPath() {
+        var personalAccountPage = new PersonalAccountPage();
+        var firstCard = DataHelper.CardsInfo.getFirstCardInfo();
+        var secondCard = DataHelper.CardsInfo.getSecondCardInfo();
+        int balanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
+        int balanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        int sumTransfer = DataHelper.TransferSum.getMinLimitSum();
+        int expectedBalanceFirstCard = balanceFirstCard - sumTransfer;
+        int expectedBalanceSecondCard = balanceSecondCard + sumTransfer;
+        var transferMoneyPage = personalAccountPage.selectCardToTransfer(secondCard);
+        var personalAccountPageHappyTransfer = transferMoneyPage.transferMoney(sumTransfer, firstCard);
+        var actualBalanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
+        var actualBalanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        assertEquals(expectedBalanceFirstCard,actualBalanceFirstCard);
+        assertEquals(expectedBalanceSecondCard,actualBalanceSecondCard);
+    }
+    @Test
+    void shouldTransferAboveLimitSumFirstToSecondCardHappyPath() {
+        var personalAccountPage = new PersonalAccountPage();
+        var firstCard = DataHelper.CardsInfo.getFirstCardInfo();
+        var secondCard = DataHelper.CardsInfo.getSecondCardInfo();
+        int balanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
+        int balanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        int sumTransfer = DataHelper.TransferSum.getMaxSum();
+        int expectedBalanceFirstCard = balanceFirstCard - sumTransfer;
+        int expectedBalanceSecondCard = balanceSecondCard + sumTransfer;
+        var transferMoneyPage = personalAccountPage.selectCardToTransfer(secondCard);
+        var personalAccountPageHappyTransfer = transferMoneyPage.transferMoney(sumTransfer, firstCard);
+        var actualBalanceFirstCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getFirstCardInfo().getId());
+        var actualBalanceSecondCard = personalAccountPage.getCardBalance(DataHelper.CardsInfo.getSecondCardInfo().getId());
+        assertEquals(expectedBalanceFirstCard,actualBalanceFirstCard);
+        assertEquals(expectedBalanceSecondCard,actualBalanceSecondCard);
+    }
 }
